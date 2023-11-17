@@ -17,9 +17,21 @@
 <div id="timer"></div>
 
 <script>
-  // Set the target date to 5.5 months from now
-  const targetDate = new Date();
-  targetDate.setMonth(targetDate.getMonth() + 5, targetDate.getDate());
+  // Function to get or set the target date from local storage
+  function getSetTargetDate() {
+    const storedTargetDate = localStorage.getItem('targetDate');
+    if (storedTargetDate) {
+      return new Date(storedTargetDate);
+    } else {
+      const targetDate = new Date();
+      targetDate.setMonth(targetDate.getMonth() + 5, targetDate.getDate());
+      localStorage.setItem('targetDate', targetDate);
+      return targetDate;
+    }
+  }
+
+  // Set the target date
+  const targetDate = getSetTargetDate();
 
   // Update the countdown every second
   const timerInterval = setInterval(updateCountdown, 1000);
@@ -33,11 +45,8 @@
       document.getElementById('timer').innerHTML = 'School is over!';
     } else {
       const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-      document.getElementById('timer').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      document.getElementById('timer').innerHTML = `${days} days`;
     }
   }
 </script>
